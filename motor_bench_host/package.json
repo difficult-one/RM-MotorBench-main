@@ -1,0 +1,47 @@
+{
+  "name": "motor-bench-host",
+  "version": "1.0.0",
+  "description": "大疆 A 板电机测试台 · 上位机(串口桥 + Web UI)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node selftest.js",
+    "test:integration": "node integration_test.js",
+    "test:control": "node ../tests/control_protocol_test.mjs",
+    "test:chassis": "node ../tests/chassis_policy_test.mjs",
+    "test:waveform": "node --test ../tests/waveform_history_test.mjs ../tests/channel_bindings_test.mjs",
+    "test:waveform:server": "node ../tests/server_waveform_regression.mjs",
+    "test:firmware": "node ../tests/firmware_behavior_test.mjs",
+    "test:ctype": "node ../tests/ctype_firmware_test.mjs",
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "test:frontend": "node --test ../tests/frontend_state_test.mjs ../tests/telemetry_freshness_test.mjs",
+    "test:reliability": "node ../tests/server_reliability_test.mjs",
+    "check": "npm run lint && npm run build && npm test && npm run test:control && npm run test:waveform && npm run test:waveform:server && npm run test:reliability && npm run test:frontend && npm run test:chassis && npm run test:firmware && npm run test:ctype && npm run test:lifecycle && npm run test:workspace && npm run test:v2 && npm run test:stepper",
+    "lint": "eslint bridge.js server.js command_validation.js motor_rules.js frontend workspace_formats.js recording_format.js experiment_store.js demo_port.js protocol_v2.js test_sequence.js test_metrics.js stepper_protocol.js modbus_rtu.js rs485_stepper.js stepper_demo.js stepper_profile_template.js",
+    "test:lifecycle": "node ../tests/lifecycle_test.mjs",
+    "test:workspace": "node --test ../tests/workspace_formats_test.mjs ../tests/experiment_store_test.mjs",
+    "test:v2": "node --test ../tests/protocol_v2_test.mjs ../tests/test_sequence_test.mjs ../tests/test_metrics_test.mjs ../tests/demo_sequence_test.mjs && node ../tests/protocol_v2_server_test.mjs",
+    "test:stepper": "node --test ../tests/stepper_protocol_test.mjs ../tests/rs485_stepper_test.mjs ../tests/stepper_server_test.mjs && node ../tests/stepper_firmware_test.mjs"
+  },
+  "dependencies": {
+    "serialport": "^12.0.0",
+    "vue": "^3.5.44",
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "eslint": "^10.13.0",
+    "eslint-plugin-vue": "^10.11.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vite": "^8.3.4",
+    "vue-tsc": "^3.3.13"
+  }
+}

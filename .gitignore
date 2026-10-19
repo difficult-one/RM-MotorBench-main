@@ -1,0 +1,47 @@
+# ---- 编译产物 ----
+build/
+*.o
+*.d
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+
+# ---- 依赖 ----
+node_modules/
+/motor_bench_host/dist/
+.playwright-cli/
+output/playwright/
+
+# ---- 文档配图(原框架自带,体积大且与本项目无关) ----
+**/.assets/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+!/basic_framework_atype_usb-master/.vscode/
+/basic_framework_atype_usb-master/.vscode/*
+!/basic_framework_atype_usb-master/.vscode/tasks.json
+!/basic_framework_ctype_usb-master/.vscode/
+/basic_framework_ctype_usb-master/.vscode/*
+!/basic_framework_ctype_usb-master/.vscode/tasks.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---- 调试 ----
+*.log
+.DS_Store
+
+# Local caches and private configuration
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+
+/output/
+/.impeccable/
+/RM-MotorBench/
+

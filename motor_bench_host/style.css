@@ -1,0 +1,534 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-2: #1e222b;
+  --line: #2a2f3a;
+  --text: #e6e8ee;
+  --muted: #8b93a5;
+  --accent: #4da3ff;
+  --ok: #3ecf8e;
+  --warn: #ffb020;
+  --danger: #ff4d4f;
+  --radius: 12px;
+}
+
+.source-panel { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); }
+.source-panel p { flex-basis: 100%; margin: 0; }
+.source-panel input { max-width: 110px; }
+.source-panel [hidden] { display: none; }
+.chassis-fields { flex-basis: 100%; display: grid; gap: 14px; }
+.chassis-wheels { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.chassis-wheels label, .chassis-actions, .chassis-actions label { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.chassis-wheels label { padding: 10px; background: var(--panel-2); border-radius: 8px; }
+.chassis-wheels span { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; }
+.chassis-wheels input[type=checkbox] { width: auto; margin: 0; accent-color: var(--accent); }
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ---------- 顶栏 ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 18px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.brand h1 {
+  font-size: 17px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger);
+  flex: none;
+  transition: background 0.2s;
+}
+
+.dot.online {
+  background: var(--ok);
+  box-shadow: 0 0 8px var(--ok);
+}
+
+.link-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.fw {
+  font-variant-numeric: tabular-nums;
+}
+
+.estop {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+}
+
+.estop:active {
+  transform: scale(0.97);
+}
+
+/* ---------- 串口面板 ---------- */
+
+.panel.serial {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.panel.serial label {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.connection-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 18px;
+  color: var(--danger);
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.connection-notice[hidden] {
+  display: none;
+}
+
+.connection-notice button {
+  flex: none;
+}
+
+/* ---- 动态添加电机 ---- */
+.panel.addmotor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.panel.addmotor .panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.panel.addmotor label {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel.addmotor input[type='number'] {
+  width: 68px;
+  padding: 6px 8px;
+}
+
+#addMsg {
+  font-size: 12px;
+  color: var(--ok, #3fb950);
+  max-width: 46ch;
+}
+
+#addMsg.error {
+  color: var(--err, #f85149);
+}
+
+/* ---- ID 冲突提示 ---- */
+.panel.hint-panel {
+  padding: 10px 18px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--muted);
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.panel.hint-panel strong {
+  color: var(--text);
+}
+
+.panel.hint-panel code {
+  font-family: ui-monospace, Consolas, monospace;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(110, 118, 129, 0.25);
+  color: var(--text);
+}
+
+select,
+input[type='number'],
+button {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+select,
+input[type='number'] {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+button {
+  background: var(--accent);
+  color: #06213a;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- 实时转速波形 ---------- */
+
+.waveform-panel {
+  margin: 18px 18px 0;
+  padding: 16px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.wave-toolbar, .wave-readings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+}
+
+.wave-toolbar h2 { margin: 0 auto 0 0; font-size: 16px; }
+.wave-toolbar label { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.wave-readings { margin: 16px 0 12px; font-size: 13px; color: var(--muted); }
+.wave-readings b { margin-left: 6px; font-variant-numeric: tabular-nums; color: var(--text); }
+.wave-target::before, .wave-actual::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-top: 2px dashed var(--accent);
+}
+.wave-actual::before { border-top: 2px solid var(--ok); }
+#waveStatus { margin-left: auto; }
+#waveCanvas { display: block; width: 100%; height: 290px; border-radius: 8px; }
+.wave-note { margin: 10px 0 0; line-height: 1.6; }
+
+@media (max-width: 600px) {
+  .waveform-panel { padding: 12px; }
+  .wave-toolbar h2 { flex-basis: 100%; }
+  .wave-toolbar { gap: 10px; }
+  #waveStatus { margin-left: 0; flex-basis: 100%; }
+  #waveCanvas { height: 240px; }
+}
+
+/* ---------- 通道卡片 ---------- */
+
+.channels {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.channel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.channel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ch-title {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.badge.bound {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.badge.running {
+  color: var(--ok);
+  border-color: var(--ok);
+  background: rgba(62, 207, 142, 0.12);
+}
+
+.badge.offline {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.bind-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bind-row select {
+  flex: 1;
+  min-width: 110px;
+}
+
+.readout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: 8px;
+}
+
+.metric {
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.metric span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.metric b {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* ---------------- PID 整定面板 ---------------- */
+
+.pid-panel {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+}
+
+.pid-panel[data-collapsed="1"] .pid-grid,
+.pid-panel[data-collapsed="1"] .pid-actions {
+  display: none;
+}
+
+.pid-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.pid-head .panel-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.pid-head select,
+.pid-head button {
+  font-size: 12px;
+  padding: 4px 9px;
+}
+
+/* 把"读回板端值"和"收起"推到右侧 */
+.pid-head button {
+  margin-left: 0;
+}
+
+.pid-head button.ghost:last-child {
+  margin-left: auto;
+}
+
+.pid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 8px;
+}
+
+.pid-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.pid-grid input {
+  width: 100%;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pid-grid input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.pid-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.pid-actions .hint {
+  font-size: 12px;
+}
+
+.hint.ok {
+  color: var(--ok);
+}
+
+.hint.error {
+  color: var(--danger);
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-row input[type='number'] {
+  width: 100px;
+}
+
+.unit {
+  color: var(--muted);
+  font-size: 12px;
+  min-width: 34px;
+}
+
+button.enable {
+  margin-left: auto;
+  background: var(--warn);
+  color: #3a2600;
+}
+
+button.enable.on {
+  background: var(--ok);
+  color: #04231a;
+}
+
+/* ---------- 提示 ---------- */
+
+.hint {
+  padding: 6px 18px 24px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.hint strong {
+  color: var(--warn);
+}
+
+@media (max-width: 480px) {
+  .channels {
+    grid-template-columns: 1fr;
+  }
+  .topbar {
+    flex-wrap: wrap;
+  }
+}
